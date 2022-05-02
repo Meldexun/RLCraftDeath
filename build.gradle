@@ -1,0 +1,85 @@
+buildscript {
+    repositories {
+        maven { url = 'https://maven.minecraftforge.net' }
+        mavenCentral()
+    }
+    dependencies {
+        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '5.1.+', changing: true
+    }
+}
+apply plugin: 'net.minecraftforge.gradle'
+apply plugin: 'eclipse'
+
+version = '1.12.2-1.0.3'
+group = 'meldexun.rldeath'
+archivesBaseName = 'RLDeath'
+
+java.toolchain.languageVersion = JavaLanguageVersion.of(8)
+
+configurations {
+    includedDependencies
+    implementation.extendsFrom(includedDependencies)
+    atDependencies
+    implementation.extendsFrom(atDependencies)
+}
+
+repositories {
+    ivy {
+        url 'https://github.com/'
+
+        patternLayout {
+            artifact '[organisation]/[module]/releases/download/v[revision]/[module]-[revision].[ext]'
+        }
+
+        metadataSources { artifact() } 
+    }
+
+    maven { url = 'https://www.cursemaven.com' }
+}
+
+dependencies {
+    minecraft 'net.minecraftforge:forge:1.12.2-14.23.5.2860'
+    includedDependencies 'meldexun:ReflectionUtil:1.0.0@jar'
+    atDependencies 'curse.maven:Waystones-245755:2859589'
+    implementation 'curse.maven:LycanitesMobs-224770:3649418'
+    implementation 'curse.maven:ClaimItAPI-324531:2980575'
+    implementation 'curse.maven:ClaimIt-324532:2980578'
+}
+
+minecraft {
+    mappings channel: 'stable', version: '39-1.12'
+
+    def atDepFileTree = files(configurations.atDependencies.collect { zipTree(it) }).getAsFileTree()
+    accessTransformer = files(
+        'src/main/resources/META-INF/accesstransformer.cfg',
+        atDepFileTree.matching { include 'META-INF/waystones_at.cfg' }
+    )
+
+    runs {
+        client {
+            taskName 'runClient RLD 1.12'
+            environment 'MC_VERSION', '1.12.2'
+            property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
+            property 'forge.logging.console.level', 'info'
+        }
+
+        server {
+            taskName 'runServer RLD 1.12'
+            environment 'MC_VERSION', '1.12.2'
+            property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
+            property 'forge.logging.console.level', 'info'
+        }
+    }
+}
+
+jar {
+    from {
+        configurations.includedDependencies.collect { it.isDirectory() ? it : zipTree(it) }
+    } {
+        exclude 'LICENSE.txt', 'META-INF/*.RSA'
+    }
+
+    manifest {
+        // attributes 'FMLAT': 'accesstransformer.cfg'
+    }
+}
