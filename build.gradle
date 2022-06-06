@@ -45,6 +45,7 @@ dependencies {
     implementation fg.deobf('curse.maven:ClaimItAPI-324531:2980575')
     implementation fg.deobf('curse.maven:ClaimIt-324532:2980578')
     implementation fg.deobf('curse.maven:CallableHorse-257572:2800372')
+    implementation fg.deobf('curse.maven:CopygirlBackpack-331746:3568565')
 }
 
 minecraft {

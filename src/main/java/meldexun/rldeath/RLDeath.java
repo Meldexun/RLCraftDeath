@@ -10,7 +10,9 @@ import com.lycanitesmobs.core.pets.PetEntry;
 import dev.itsmeow.claimit.api.claim.ClaimManager;
 import meldexun.reflectionutil.ReflectionField;
 import net.blay09.mods.waystones.PlayerWaystoneHelper;
+import net.mcft.copy.backpacks.api.BackpackHelper;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
@@ -46,6 +48,7 @@ public class RLDeath {
 		resetLycanitesMobs(player);
 		resetClaimIt(player);
 		resetCallableHorse(player);
+		resetCopygirlBackpack(player);
 	}
 
 	private static void resetSpawnPoint(EntityPlayer player) {
@@ -85,6 +88,10 @@ public class RLDeath {
 
 	private static void resetCallableHorse(EntityPlayer player) {
 		HorseHelper.getOwnerCap(player).clearHorse();
+	}
+
+	private static void resetCopygirlBackpack(EntityPlayer player) {
+		BackpackHelper.setEquippedBackpack(player, ItemStack.EMPTY, null);
 	}
 
 }
