@@ -4,15 +4,15 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '5.1.+', changing: true
+        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: "${forge_gradle_version}", changing: true
     }
 }
 apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'eclipse'
 
-version = '1.12.2-1.0.3'
-group = 'meldexun.rldeath'
-archivesBaseName = 'RLDeath'
+version = "${mc_version}-${mod_version}-${mod_stage}"
+group = "meldexun.${mod_id}"
+archivesBaseName = "${mod_name}"
 
 java.toolchain.languageVersion = JavaLanguageVersion.of(8)
 
@@ -38,16 +38,16 @@ repositories {
 }
 
 dependencies {
-    minecraft 'net.minecraftforge:forge:1.12.2-14.23.5.2860'
+    minecraft "net.minecraftforge:forge:${mc_version}-${forge_version}"
     includedDependencies 'meldexun:ReflectionUtil:1.0.0@jar'
-    atDependencies 'curse.maven:Waystones-245755:2859589'
-    implementation 'curse.maven:LycanitesMobs-224770:3649418'
-    implementation 'curse.maven:ClaimItAPI-324531:2980575'
-    implementation 'curse.maven:ClaimIt-324532:2980578'
+    atDependencies fg.deobf('curse.maven:Waystones-245755:2859589')
+    implementation fg.deobf('curse.maven:LycanitesMobs-224770:3649418')
+    implementation fg.deobf('curse.maven:ClaimItAPI-324531:2980575')
+    implementation fg.deobf('curse.maven:ClaimIt-324532:2980578')
 }
 
 minecraft {
-    mappings channel: 'stable', version: '39-1.12'
+    mappings channel: "${mappings_channel}", version: "${mappings_version}"
 
     def atDepFileTree = files(configurations.atDependencies.collect { zipTree(it) }).getAsFileTree()
     accessTransformer = files(
@@ -57,29 +57,42 @@ minecraft {
 
     runs {
         client {
-            taskName 'runClient RLD 1.12'
-            environment 'MC_VERSION', '1.12.2'
+            taskName "runClient ${mod_name} ${mc_version}"
+            environment 'MC_VERSION', "${mc_version}"
             property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
             property 'forge.logging.console.level', 'info'
         }
 
         server {
-            taskName 'runServer RLD 1.12'
-            environment 'MC_VERSION', '1.12.2'
+            taskName "runServer ${mod_name} ${mc_version}"
+            environment 'MC_VERSION', "${mc_version}"
             property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
             property 'forge.logging.console.level', 'info'
         }
     }
 }
 
+processResources {
+    inputs.property('version', "${mod_stage}" != "" ? "${mod_version}-${mod_stage}" : "${mod_version}")
+
+    filesMatching('mcmod.info') {
+        expand version: inputs.properties.get('version')
+    }
+}
+
 jar {
+    archiveBaseName = mod_name
+    archiveAppendix = mc_version
+    archiveVersion = mod_version
+    archiveClassifier = mod_stage
+
     from {
         configurations.includedDependencies.collect { it.isDirectory() ? it : zipTree(it) }
-    } {
-        exclude 'LICENSE.txt', 'META-INF/*.RSA'
     }
 
     manifest {
         // attributes 'FMLAT': 'accesstransformer.cfg'
     }
 }
+
+jar.finalizedBy('reobfJar')
