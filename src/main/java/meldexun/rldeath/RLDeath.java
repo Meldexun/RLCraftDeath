@@ -18,6 +18,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import tschipp.callablehorses.common.helper.HorseHelper;
 
 @Mod(modid = RLDeath.MODID, acceptableRemoteVersions = "*")
 @EventBusSubscriber(modid = RLDeath.MODID)
@@ -44,6 +45,7 @@ public class RLDeath {
 		resetWaystones(player);
 		resetLycanitesMobs(player);
 		resetClaimIt(player);
+		resetCallableHorse(player);
 	}
 
 	private static void resetSpawnPoint(EntityPlayer player) {
@@ -79,6 +81,10 @@ public class RLDeath {
 	private static void resetClaimIt(EntityPlayer player) {
 		ClaimManager claimManager = ClaimManager.getManager();
 		claimManager.getClaimsOwnedByPlayer(player.getGameProfile().getId()).forEach(claimManager::deleteClaim);
+	}
+
+	private static void resetCallableHorse(EntityPlayer player) {
+		HorseHelper.getOwnerCap(player).clearHorse();
 	}
 
 }
