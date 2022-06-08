@@ -8,6 +8,7 @@ import meldexun.rldeath.integration.CallableHorses;
 import meldexun.rldeath.integration.ClaimIt;
 import meldexun.rldeath.integration.CopygirlsWearableBackpacks;
 import meldexun.rldeath.integration.LycanitesMobs;
+import meldexun.rldeath.integration.VariedCommodities;
 import meldexun.rldeath.integration.Waystones;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.math.BlockPos;
@@ -40,6 +41,7 @@ public class RLDeath {
 	private static boolean claimItLoaded;
 	private static boolean callableHorsesLoaded;
 	private static boolean copygilsWearableBackpacksLoaded;
+	private static boolean variedCommoditiesLoaded;
 
 	@EventHandler
 	public void onFMLPostInitializationEvent(FMLPostInitializationEvent event) {
@@ -47,6 +49,7 @@ public class RLDeath {
 		claimItLoaded = Loader.isModLoaded("claimit");
 		copygilsWearableBackpacksLoaded = Loader.isModLoaded("wearablebackpacks");
 		lycanitesMobsLoaded = Loader.isModLoaded("lycanitesmobs");
+		variedCommoditiesLoaded = Loader.isModLoaded("variedcommodities");
 		waystonesLoaded = Loader.isModLoaded("waystones");
 	}
 
@@ -71,6 +74,9 @@ public class RLDeath {
 			LycanitesMobs.resetLycanitesMobs(player);
 		if (waystonesLoaded && RLDeathConfig.integration.resetWaystones)
 			Waystones.resetWaystones(player);
+
+		if (variedCommoditiesLoaded && RLDeathConfig.integration.placeVariedCommoditiesTomb)
+			VariedCommodities.placeVariedCommoditiesTombstone(player, event.getSource());
 	}
 
 	private static void resetSpawnPoint(EntityPlayer player) {
