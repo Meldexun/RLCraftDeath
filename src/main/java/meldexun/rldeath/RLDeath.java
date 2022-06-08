@@ -3,6 +3,7 @@ package meldexun.rldeath;
 import java.util.Map;
 
 import meldexun.reflectionutil.ReflectionField;
+import meldexun.rldeath.config.RLDeathConfig;
 import meldexun.rldeath.integration.CallableHorses;
 import meldexun.rldeath.integration.ClaimIt;
 import meldexun.rldeath.integration.CopygirlsWearableBackpacks;
@@ -55,18 +56,20 @@ public class RLDeath {
 			return;
 
 		EntityPlayer player = (EntityPlayer) event.getEntity();
-		resetSpawnPoint(player);
-		resetEnderChestInventory(player);
+		if (RLDeathConfig.resetEnderChest)
+			resetSpawnPoint(player);
+		if (RLDeathConfig.resetSpawnPoint)
+			resetEnderChestInventory(player);
 
-		if (callableHorsesLoaded)
+		if (callableHorsesLoaded && RLDeathConfig.integration.resetCallableHorses)
 			CallableHorses.resetCallableHorses(player);
-		if (claimItLoaded)
+		if (claimItLoaded && RLDeathConfig.integration.resetClaimIt)
 			ClaimIt.resetClaimIt(player);
-		if (copygilsWearableBackpacksLoaded)
+		if (copygilsWearableBackpacksLoaded && RLDeathConfig.integration.resetCopygirlsWearableBackpacks)
 			CopygirlsWearableBackpacks.resetCopygirlsWearableBackpacks(player);
-		if (lycanitesMobsLoaded)
+		if (lycanitesMobsLoaded && RLDeathConfig.integration.resetLycanitesMobs)
 			LycanitesMobs.resetLycanitesMobs(player);
-		if (waystonesLoaded)
+		if (waystonesLoaded && RLDeathConfig.integration.resetWaystones)
 			Waystones.resetWaystones(player);
 	}
 
