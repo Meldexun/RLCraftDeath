@@ -37,8 +37,8 @@ public class RLDeath {
 			EntityPlayer.class, "spawnForcedMap", "spawnForcedMap");
 
 	@SubscribeEvent(priority = EventPriority.HIGH)
-	public static void init(LivingDeathEvent event) {
 		if (!(event.getEntity() instanceof EntityPlayer)) {
+	public static void onLivingDeathEvent(LivingDeathEvent event) {
 			return;
 		}
 		EntityPlayer player = (EntityPlayer) event.getEntity();
