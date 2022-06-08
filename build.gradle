@@ -40,12 +40,13 @@ repositories {
 dependencies {
     minecraft "net.minecraftforge:forge:${mc_version}-${forge_version}"
     includedDependencies 'meldexun:ReflectionUtil:1.0.0@jar'
-    atDependencies fg.deobf('curse.maven:Waystones-245755:2859589')
-    implementation fg.deobf('curse.maven:LycanitesMobs-224770:3649418')
-    implementation fg.deobf('curse.maven:ClaimItAPI-324531:2980575')
+    implementation fg.deobf('curse.maven:CallableHorse-331746:3568565')
     implementation fg.deobf('curse.maven:ClaimIt-324532:2980578')
-    implementation fg.deobf('curse.maven:CallableHorse-257572:2800372')
-    implementation fg.deobf('curse.maven:CopygirlBackpack-331746:3568565')
+    implementation fg.deobf('curse.maven:ClaimItAPI-324531:2980575')
+    implementation fg.deobf('curse.maven:CopygirlBackpack-257572:2800372')
+    implementation fg.deobf('curse.maven:LycanitesMobs-224770:3649418')
+    implementation fg.deobf('curse.maven:VariedCommodities-257777:3604292')
+    atDependencies fg.deobf('curse.maven:Waystones-245755:2859589')
 }
 
 minecraft {
