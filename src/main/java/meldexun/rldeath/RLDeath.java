@@ -59,9 +59,9 @@ public class RLDeath {
 			return;
 
 		EntityPlayer player = (EntityPlayer) event.getEntity();
-		if (RLDeathConfig.resetEnderChest)
-			resetSpawnPoint(player);
 		if (RLDeathConfig.resetSpawnPoint)
+			resetSpawnPoint(player);
+		if (RLDeathConfig.resetEnderChest)
 			resetEnderChestInventory(player);
 
 		if (callableHorsesLoaded && RLDeathConfig.integration.resetCallableHorses)
